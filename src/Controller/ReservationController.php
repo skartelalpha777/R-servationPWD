@@ -25,9 +25,11 @@ final class ReservationController extends AbstractController
     #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
+       
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
+       
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($reservation);

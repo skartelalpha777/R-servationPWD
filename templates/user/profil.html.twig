@@ -1,0 +1,113 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil - Espace Membre
+{% endblock %}
+
+{% block body %}
+
+	{% if app.user %}
+		<div class="container mt-5">
+			<h1 class="mb-4">Mon Espace Membre</h1>
+
+			<div
+				class="row">
+				
+				<div class="col-md-4 mb-4">
+					<div class="card shadow-sm h-100">
+						<div class="card-header bg-primary text-white">
+							<h5 class="card-title mb-0">Mes Informations</h5>
+						</div>
+
+
+						<div class="card-body">
+							<p>
+								<strong>Prénom :</strong>
+								{{ app.user.firstname }}</p>
+							<p>
+								<strong>Nom :</strong>
+								{{ app.user.lastname }}</p>
+							<p>
+								<strong>Email :</strong>
+								{{ app.user.email }}</p>
+							<p>
+								<strong>Rôle :</strong>
+								{{ app.user.role ? app.user.role.label : 'Membre' }}</p>
+						</div>
+						<div
+							class="card-footer bg-white d-flex flex-column gap-2 border-top-0 pb-3">
+							
+							<a href="{{path('app_user_edit',{'id' : app.user.id })}}" class="btn btn-secondary w-100">Modifier ou supprimer mon profil</a>
+
+							</div>
+					</div>
+				</div>
+
+		
+				<div class="col-md-8 mb-4">
+					<div class="card shadow-sm h-100">
+						<div class="card-header bg-success-emphasis">
+							<h5 class="card-title mb-0">Mes Réservations</h5>
+						</div>
+						<div class="card-body p-0">
+							{% if app.user.reservations is not empty %}
+								<div class="table-responsive">
+									<table class="table  mb-0 align-middle">
+										<thead class="table-light">
+											<tr>
+												<th>Spectacle</th>
+												<th>Date de représentation</th>
+												<th>Places</th>
+												<th>Total</th>
+												<th>Statut</th>
+												
+											</tr>
+										</thead>
+										<tbody>
+											{% for reservation in app.user.reservations %}
+												<tr>
+													<td>
+														{% if reservation.representation and reservation.representation.representationShow %}
+															<strong>{{ reservation.representation.representationShow.title }}</strong>
+														{% else %}
+															<span class="text-muted">Non défini</span>
+														{% endif %}
+													</td>
+													<td>
+														{% if reservation.representation %}
+															{{ reservation.representation.schedule|date('d/m/Y à H:i') }}
+														{% else %}
+															-
+														{% endif %}
+													</td>
+													<td>{{ reservation.quantity }}</td>
+													<td>{{ reservation.totalPrice }}
+														€</td>
+													<td>
+														<span >{{ reservation.status.value }}</span>
+													</td>
+													
+												</tr>
+											{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							{% else %}
+								<div class="p-5 text-center text-muted">
+									<p>Vous n'avez effectué aucune réservation pour le moment.</p>
+									<a href="{{ path('app_show_index') }}" class="btn btn-primary mt-2">Voir les spectacles</a>
+								</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% else  %}
+		<p>Vous devez être connecté pour accéder à cette page.</p>
+		<a href="{{path('app_login')}}">
+			Se connecter
+		</a>
+	{% endif %}
+
+
+{% endblock %}

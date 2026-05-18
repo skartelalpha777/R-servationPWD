@@ -21,7 +21,7 @@
             <tr>
                 <td>{{ reservation.id }}</td>
                 <td>{{ reservation.bookingDate ? reservation.bookingDate|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ reservation.status }}</td>
+                <td>{{ reservation.status.value }}</td>
                 <td>{{ reservation.quantity }}</td>
                 <td>{{ reservation.totalPrice }}</td>
                 <td>
