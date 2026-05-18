@@ -23,6 +23,20 @@ class Reservation
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?User $user = null;
 
+    #[ORM\Column]
+    private ?int $quantity = null;
+
+    #[ORM\Column]
+    private ?float $totalPrice = null;
+
+    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    private ?Representation $representation = null;
+
+    function __construct()
+    {
+        $this->booking_date = new \DateTime();
+        $this->status = Status::Pending;
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -60,6 +74,42 @@ class Reservation
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getQuantity(): ?int
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(int $quantity): static
+    {
+        $this->quantity = $quantity;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?float
+    {
+        return $this->totalPrice;
+    }
+
+    public function setTotalPrice(float $totalPrice): static
+    {
+        $this->totalPrice = $totalPrice;
+
+        return $this;
+    }
+
+    public function getRepresentation(): ?Representation
+    {
+        return $this->representation;
+    }
+
+    public function setRepresentation(?Representation $representation): static
+    {
+        $this->representation = $representation;
 
         return $this;
     }

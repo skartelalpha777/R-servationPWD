@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\LocationsRepository;
+use App\Repository\LocationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: LocationsRepository::class)]
+#[ORM\Entity(repositoryClass:LocationRepository::class)]
 class Location
 {
     #[ORM\Id]
@@ -15,7 +15,7 @@ class Location
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255,nullable: true)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]

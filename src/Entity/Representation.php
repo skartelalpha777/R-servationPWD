@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\RepresentationsRepository;
+use App\Repository\RepresentationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: RepresentationRepository::class)]
@@ -18,6 +20,17 @@ class Representation
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Show $representationShow = null;
+
+    /**
+     * @var Collection<int, Reservation>
+     */
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'representation')]
+    private Collection $reservations;
+
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
