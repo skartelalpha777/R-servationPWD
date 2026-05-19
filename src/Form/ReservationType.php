@@ -17,7 +17,7 @@ class ReservationType extends AbstractType
     {
         $builder
             //->add('booking_date')
-            //->add('status')
+            ->add('status')
             ->add('quantity', IntegerType::class,[
             ])
             /*->add('user', EntityType::class, [

@@ -58,6 +58,7 @@
 												<th>Prix unitaire</th>
 												<th>Prix total</th>
 												<th>Statut</th>
+												<th>Action</th>
 
 											</tr>
 										</thead>
@@ -80,10 +81,21 @@
 													</td>
 													<td>{{ reservation.quantity }}</td>
 													<td>{{ reservation.representation.price }}€</td>
-													<td>{{  reservation.totalPrice }}€ </td>
-													<td>
-														<span>{{ reservation.status.value }}</span>
+													<td>{{  reservation.totalPrice }}€
 													</td>
+													<td>
+														{{ reservation.status.value }}
+
+
+													</td>
+													<td>
+														{% if (reservation.representation.schedule|date('d/m/Y à H:i') < "now"|date('d/m/Y à H:i')) and reservation.status.value == 'accepted'%}
+
+															<a href="{{path('app_review_new',{'id':reservation.representation.representationShow.id })}}">Commenter</a>
+
+														{% endif %}
+													</td>
+
 
 												</tr>
 											{% endfor %}
