@@ -9,7 +9,9 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Show</th>
                 <th>Schedule</th>
+                <th>Price</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -17,7 +19,9 @@
         {% for representation in representations %}
             <tr>
                 <td>{{ representation.id }}</td>
+                <td>{{ representation.representationShow.title }}</td>
                 <td>{{ representation.schedule ? representation.schedule|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ representation.price}}</td>
                 <td>
                     <a href="{{ path('app_representation_show', {'id': representation.id}) }}">show</a>
                     <a href="{{ path('app_representation_edit', {'id': representation.id}) }}">edit</a>

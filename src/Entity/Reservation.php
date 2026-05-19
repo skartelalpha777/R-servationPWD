@@ -26,11 +26,13 @@ class Reservation
     #[ORM\Column]
     private ?int $quantity = null;
 
-    #[ORM\Column]
-    private ?float $totalPrice = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     private ?Representation $representation = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $totalPrice = null;
 
     function __construct()
     {
@@ -90,18 +92,6 @@ class Reservation
         return $this;
     }
 
-    public function getTotalPrice(): ?float
-    {
-        return $this->totalPrice;
-    }
-
-    public function setTotalPrice(float $totalPrice): static
-    {
-        $this->totalPrice = $totalPrice;
-
-        return $this;
-    }
-
     public function getRepresentation(): ?Representation
     {
         return $this->representation;
@@ -110,6 +100,18 @@ class Reservation
     public function setRepresentation(?Representation $representation): static
     {
         $this->representation = $representation;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?int
+    {
+        return $this->totalPrice;
+    }
+
+    public function setTotalPrice(?int $totalPrice): static
+    {
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }

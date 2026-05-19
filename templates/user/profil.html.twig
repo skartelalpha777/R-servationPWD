@@ -9,9 +9,8 @@
 		<div class="container mt-5">
 			<h1 class="mb-4">Mon Espace Membre</h1>
 
-			<div
-				class="row">
-				
+			<div class="row">
+
 				<div class="col-md-4 mb-4">
 					<div class="card shadow-sm h-100">
 						<div class="card-header bg-primary text-white">
@@ -33,16 +32,15 @@
 								<strong>Rôle :</strong>
 								{{ app.user.role ? app.user.role.label : 'Membre' }}</p>
 						</div>
-						<div
-							class="card-footer bg-white d-flex flex-column gap-2 border-top-0 pb-3">
-							
+						<div class="card-footer bg-white d-flex flex-column gap-2 border-top-0 pb-3">
+
 							<a href="{{path('app_user_edit',{'id' : app.user.id })}}" class="btn btn-secondary w-100">Modifier ou supprimer mon profil</a>
 
-							</div>
+						</div>
 					</div>
 				</div>
 
-		
+
 				<div class="col-md-8 mb-4">
 					<div class="card shadow-sm h-100">
 						<div class="card-header bg-success-emphasis">
@@ -57,9 +55,10 @@
 												<th>Spectacle</th>
 												<th>Date de représentation</th>
 												<th>Places</th>
-												<th>Total</th>
+												<th>Prix unitaire</th>
+												<th>Prix total</th>
 												<th>Statut</th>
-												
+
 											</tr>
 										</thead>
 										<tbody>
@@ -80,12 +79,12 @@
 														{% endif %}
 													</td>
 													<td>{{ reservation.quantity }}</td>
-													<td>{{ reservation.totalPrice }}
-														€</td>
+													<td>{{ reservation.representation.price }}€</td>
+													<td>{{  reservation.totalPrice }}€ </td>
 													<td>
-														<span >{{ reservation.status.value }}</span>
+														<span>{{ reservation.status.value }}</span>
 													</td>
-													
+
 												</tr>
 											{% endfor %}
 										</tbody>

@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+use App\Entity\Location;
 use App\Entity\Representation;
 use App\Entity\Show;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -15,10 +16,12 @@ class RepresentationType extends AbstractType
     {
         $builder
             ->add('schedule')
+            ->add('price')
             ->add('representationShow', EntityType::class, [
                 'class' => Show::class,
                 'choice_label' => 'title',
             ])
+    
         ;
     }
 

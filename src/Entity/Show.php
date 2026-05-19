@@ -46,10 +46,17 @@ class Show
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
+    /**
+     * @var Collection<int, Review>
+     */
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'showReview')]
+    private Collection $review;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
         $this->created_in = new \DateTime();
+        $this->review = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -179,6 +186,36 @@ class Show
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Review>
+     */
+    public function getShowReview(): Collection
+    {
+        return $this->review;
+    }
+
+    public function addShowReview(Review $showReview): static
+    {
+        if (!$this->review->contains($showReview)) {
+            $this->review->add($showReview);
+            $showReview->setShowReview($this);
+        }
+
+        return $this;
+    }
+
+    public function removeShowReview(Review $showReview): static
+    {
+        if ($this->review->removeElement($showReview)) {
+            // set the owning side to null (unless already changed)
+            if ($showReview->getShowReview() === $this) {
+                $showReview->setShowReview(null);
+            }
+        }
 
         return $this;
     }

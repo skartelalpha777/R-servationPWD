@@ -55,15 +55,19 @@
 								<span class="badge bg-success">Réservable</span>
 								<div>
 									{% if app.user %}
-										<a href="{{ path('app_show_show', {'id': show.id}) }}" class="btn btn-primary btn-sm">Réserver</a>
+										<a href="{{ path('app_reservation_new', {'id': show.id}) }}" class="btn btn-primary btn-sm">Réserver</a>
 
 									{% else %}
 										<p class="mb-0 text-muted small">Connectez-vous pour réserver</p>
-								{% endif %}
+									{% endif %}
 								</div>
 							{% else %}
 								<span class="badge bg-danger">Non réservable</span>
 								<a href="{{ path('app_show_show', {'id': show.id}) }}" class="btn btn-outline-secondary btn-sm">En savoir plus</a>
+							{% endif %}
+
+							{% if is_granted('ROLE_ADMINISTRATEUR' ) %}
+								<a href="{{ path('app_show_edit', {'id': show.id}) }}" class="btn btn-danger btn-sm">Modifier ou supprimer l'évenement</a>
 							{% endif %}
 						</div>
 					</div>

@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/show')]
+#[Route('/')]
 final class ShowController extends AbstractController
 {
     #[Route(name: 'app_show_index', methods: ['GET'])]
@@ -22,7 +22,7 @@ final class ShowController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_show_new', methods: ['GET', 'POST'])]
+    #[Route('new', name: 'app_show_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $show = new Show();
@@ -41,8 +41,9 @@ final class ShowController extends AbstractController
             'form' => $form,
         ]);
     }
-
-    #[Route('/{id}', name: 'app_show_show', methods: ['GET'])]
+    
+// ici on precise que l'id doit etre obligatoirement un entier
+    #[Route('/{id<\d+>}', name: 'app_show_show', methods: ['GET'])]
     public function show(Show $show): Response
     {
         return $this->render('show/show.html.twig', [
@@ -50,7 +51,7 @@ final class ShowController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_show_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id<\d+>}/edit', name: 'app_show_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Show $show, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(ShowType::class, $show);
@@ -68,7 +69,7 @@ final class ShowController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_show_delete', methods: ['POST'])]
+    #[Route('/{id<\d+>}', name: 'app_show_delete', methods: ['POST'])]
     public function delete(Request $request, Show $show, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$show->getId(), $request->getPayload()->getString('_token'))) {

@@ -25,13 +25,15 @@ final class ReservationController extends AbstractController
     #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
-       
+
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
-       
+
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $reservation->setUser($this->getUser());          
+            $reservation->setTotalPrice($reservation->getQuantity() * ($reservation->getRepresentation()->getPrice()));
             $entityManager->persist($reservation);
             $entityManager->flush();
 
@@ -73,7 +75,7 @@ final class ReservationController extends AbstractController
     #[Route('/{id}', name: 'app_reservation_delete', methods: ['POST'])]
     public function delete(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$reservation->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $reservation->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($reservation);
             $entityManager->flush();
         }

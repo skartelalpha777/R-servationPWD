@@ -27,6 +27,9 @@ class Representation
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'representation')]
     private Collection $reservations;
 
+    #[ORM\Column(nullable: false)]
+    private ?float $Price = null;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
@@ -57,6 +60,18 @@ class Representation
     public function setRepresentationShow(?Show $representationShow): static
     {
         $this->representationShow = $representationShow;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->Price;
+    }
+
+    public function setPrice(?float $Price): static
+    {
+        $this->Price = $Price;
 
         return $this;
     }
