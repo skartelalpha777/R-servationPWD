@@ -2,9 +2,11 @@
 
 namespace App\Form;
 
+use App\Entity\Price;
 use App\Entity\Representation;
+use App\Entity\RepresentationReservation;
 use App\Entity\Reservation;
-use App\Entity\User;
+use Doctrine\Common\Collections\Expr\Value;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -17,21 +19,53 @@ class ReservationType extends AbstractType
     {
         $builder
             //->add('booking_date')
-            ->add('status')
-            ->add('quantity', IntegerType::class,[
-            ])
-            /*->add('user', EntityType::class, [
+            // ->add('status')
+
+            /* ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
             ]) */
-            ->add('representation', EntityType::class, [
+            ->add('representations', EntityType::class, [
+                'class' => Representation::class,
+                'label' => ' ',
+                'choice_label' => function (Representation $representation) {
+
+                    $titre = $representation->getRepresentationShow() ? $representation->getRepresentationShow()->getTitle() : 'Spectacle inconnu';
+                    $prix =  $representation->getPrice() ? $representation->getPrice() . ' €' : 'Prix non défini';
+                    $showTime = $representation->getSchedule() ? $representation->getSchedule()->format('d/m/Y à H:i') : 'Date inconnue';
+                    return $titre . ' - Date : ' . $showTime . '   Prix : ' . $prix;
+                },
+                'multiple' => true,
+                'mapped' => false,
+                'expanded' => false,
+
+            ])
+            ->add('price', EntityType::class, [
+                'class' => Price::class,
+                'label' => 'Prix',
+                'choice_label' => function (Price $prix) {
+
+                    $type = $prix->getType() ? $prix->getType()->value : 'Type indefini';
+                    $prix = $prix->getPrice() ? $prix->getPrice() : 'Prix indefini';
+                    return 'Type: ' . $type . 'Prix : ' . $prix;
+                },
+                'multiple' => true,
+                'mapped' => false,
+                'expanded' => false,
+
+            ])
+            ->add('quantity', IntegerType::class, [
+
+                'mapped' => false,
+            ])
+            /* ->add('representation', EntityType::class, [
                 'class' => Representation::class,
                 'choice_label' => function (Representation $representation) {
                     $titre = $representation->getRepresentationShow()->getTitle();
                     $date = $representation->getSchedule() ? $representation->getSchedule()->format('d/m/Y à H:i') : '';
                     return $titre . ' - ' . $date;
                 },
-            ])
+            ]) */
         ;
     }
 

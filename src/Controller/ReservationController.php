@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Reservation;
+use App\Entity\RepresentationReservation;
 use App\Form\ReservationType;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,15 +28,30 @@ final class ReservationController extends AbstractController
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
 
+        $rp = new RepresentationReservation();
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation);
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $reservation->setUser($this->getUser());          
-            $reservation->setTotalPrice($reservation->getQuantity() * ($reservation->getRepresentation()->getPrice()));
+            $reservation->setUser($this->getUser());
             $entityManager->persist($reservation);
+            $quantity = $form->get('quantity')->getData();
+            $selectedRepresentations = $form->get('representations')->getData();
+
+            foreach ($selectedRepresentations as $representation) {
+                $rp = new RepresentationReservation();
+                $rp->setQuantity($quantity);
+                $rp->setReservation($reservation);
+                $rp->setRepresentation($representation);
+
+               // dd($representation->getPrice());
+             //   $rp->setPrice($representation->getPrice());
+
+                $entityManager->persist($rp);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
@@ -54,7 +70,7 @@ final class ReservationController extends AbstractController
             'reservation' => $reservation,
         ]);
     }
-    #[IsGranted('ROLE_ADMIN')]
+    //#[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {

@@ -2,78 +2,94 @@
 
 namespace App\Entity;
 
-use App\Enum\Status;
-use App\Repository\ReservationRepository;
+use App\Enum\TicketType;
+use App\Repository\PriceRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ReservationRepository::class)]
-class Reservation
+#[ORM\Entity(repositoryClass: PriceRepository::class)]
+class Price
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(enumType: self::class)]
+    private ?TicketType $type = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 0)]
+    private ?string $price = null;
+
     #[ORM\Column]
-    private ?\DateTime $booking_date = null;
+    private ?\DateTime $start_date = null;
 
-    #[ORM\Column(enumType: Status::class)]
-    private ?Status $status = null;
-
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
-    private ?User $user = null;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $end_date = null;
 
     /**
      * @var Collection<int, RepresentationReservation>
      */
-    #[ORM\OneToMany(targetEntity: RepresentationReservation::class, mappedBy: 'reservation')]
+    #[ORM\OneToMany(targetEntity: RepresentationReservation::class, mappedBy: 'price')]
     private Collection $representationReservations;
 
-    function __construct()
+    public function __construct()
     {
-        $this->booking_date = new \DateTime();
-        $this->status = Status::Pending;
         $this->representationReservations = new ArrayCollection();
+        $this->start_date = new \DateTime();
     }
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getBookingDate(): ?\DateTime
+    public function getType()
     {
-        return $this->booking_date;
+        return $this->type;
     }
 
-    public function setBookingDate(\DateTime $booking_date): static
+    public function setType(TicketType $type): static
     {
-        $this->booking_date = $booking_date;
+        $this->type = $type;
 
         return $this;
     }
 
-    public function getStatus(): ?Status
+    public function getPrice(): ?string
     {
-        return $this->status;
+        return $this->price;
     }
 
-    public function setStatus(Status $status): static
+    public function setPrice(string $price): static
     {
-        $this->status = $status;
+        $this->price = $price;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getStartDate(): ?\DateTime
     {
-        return $this->user;
+        return $this->start_date;
     }
 
-    public function setUser(?User $user): static
+    public function setStartDate(\DateTime $start_date): static
     {
-        $this->user = $user;
+        $this->start_date = $start_date;
+
+        return $this;
+    }
+
+    public function getEndDate(): ?\DateTime
+    {
+        return $this->end_date;
+    }
+
+    public function setEndDate(?\DateTime $end_date): static
+    {
+        $this->end_date = $end_date;
 
         return $this;
     }
@@ -90,7 +106,7 @@ class Reservation
     {
         if (!$this->representationReservations->contains($representationReservation)) {
             $this->representationReservations->add($representationReservation);
-            $representationReservation->setReservation($this);
+            $representationReservation->setPrice($this);
         }
 
         return $this;
@@ -100,8 +116,8 @@ class Reservation
     {
         if ($this->representationReservations->removeElement($representationReservation)) {
             // set the owning side to null (unless already changed)
-            if ($representationReservation->getReservation() === $this) {
-                $representationReservation->setReservation(null);
+            if ($representationReservation->getPrice() === $this) {
+                $representationReservation->setPrice(null);
             }
         }
 

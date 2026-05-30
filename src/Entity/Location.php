@@ -36,9 +36,16 @@ class Location
     #[ORM\OneToMany(targetEntity: Show::class, mappedBy: 'location')]
     private Collection $shows;
 
+    /**
+     * @var Collection<int, Representation>
+     */
+    #[ORM\OneToMany(targetEntity: Representation::class, mappedBy: 'location')]
+    private Collection $representations;
+
     public function __construct()
     {
         $this->shows = new ArrayCollection();
+        $this->representations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -130,6 +137,36 @@ class Location
             // set the owning side to null (unless already changed)
             if ($show->getLocation() === $this) {
                 $show->setLocation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Representation>
+     */
+    public function getRepresentations(): Collection
+    {
+        return $this->representations;
+    }
+
+    public function addRepresentation(Representation $representation): static
+    {
+        if (!$this->representations->contains($representation)) {
+            $this->representations->add($representation);
+            $representation->setLocation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepresentation(Representation $representation): static
+    {
+        if ($this->representations->removeElement($representation)) {
+            // set the owning side to null (unless already changed)
+            if ($representation->getLocation() === $this) {
+                $representation->setLocation(null);
             }
         }
 

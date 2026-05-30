@@ -30,9 +30,19 @@ class Representation
     #[ORM\Column(nullable: false)]
     private ?float $Price = null;
 
+    #[ORM\ManyToOne(inversedBy: 'representations')]
+    private ?Location $location = null;
+
+    /**
+     * @var Collection<int, RepresentationReservation>
+     */
+    #[ORM\OneToMany(targetEntity: RepresentationReservation::class, mappedBy: 'representation')]
+    private Collection $representationReservations;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
+        $this->representationReservations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,4 +85,48 @@ class Representation
 
         return $this;
     }
+
+    public function getLocation(): ?Location
+    {
+        return $this->location;
+    }
+
+    public function setLocation(?Location $location): static
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, RepresentationReservation>
+     */
+    public function getRepresentationReservations(): Collection
+    {
+        return $this->representationReservations;
+    }
+
+    public function addRepresentationReservation(RepresentationReservation $representationReservation): static
+    {
+        if (!$this->representationReservations->contains($representationReservation)) {
+            $this->representationReservations->add($representationReservation);
+            $representationReservation->setRepresentation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepresentationReservation(RepresentationReservation $representationReservation): static
+    {
+        if ($this->representationReservations->removeElement($representationReservation)) {
+            // set the owning side to null (unless already changed)
+            if ($representationReservation->getRepresentation() === $this) {
+                $representationReservation->setRepresentation(null);
+            }
+        }
+
+        return $this;
+    }
+
+
 }

@@ -58,46 +58,43 @@
 												<th>Prix unitaire</th>
 												<th>Prix total</th>
 												<th>Statut</th>
-												<th>Action</th>
+
 
 											</tr>
 										</thead>
 										<tbody>
 											{% for reservation in app.user.reservations %}
-												<tr>
-													<td>
-														{% if reservation.representation and reservation.representation.representationShow %}
-															<strong>{{ reservation.representation.representationShow.title }}</strong>
-														{% else %}
-															<span class="text-muted">Non défini</span>
-														{% endif %}
-													</td>
-													<td>
-														{% if reservation.representation %}
-															{{ reservation.representation.schedule|date('d/m/Y à H:i') }}
-														{% else %}
-															-
-														{% endif %}
-													</td>
-													<td>{{ reservation.quantity }}</td>
-													<td>{{ reservation.representation.price }}€</td>
-													<td>{{  reservation.totalPrice }}€
-													</td>
-													<td>
-														{{ reservation.status.value }}
+												{% for ticket in reservation.representationReservations %}
+													<tr>
+														<td>
+															{% if ticket.representation %}
+																{{ ticket.representation.representationShow.title}}
+															{% else %}
+																<span class="text-muted">Non défini</span>
+															{% endif %}
+														</td>
+														<td>
+															{% if ticket.representation %}
 
-
-													</td>
-													<td>
-														{% if (reservation.representation.schedule|date('d/m/Y à H:i') < "now"|date('d/m/Y à H:i')) and reservation.status.value == 'accepted'%}
-
-															<a href="{{path('app_review_new',{'id':reservation.representation.representationShow.id })}}">Commenter</a>
-
-														{% endif %}
-													</td>
-
-
-												</tr>
+																{{ ticket.representation.schedule|date('d/m/Y à H:i') }}
+															{% else %}
+																-
+															{% endif %}
+														</td>
+														<td>{{ ticket.quantity }}</td>
+														<td>{{ ticket.price ? ticket.price.price : 0 }}€</td>
+														<td>{{ ticket.price ? ticket.price.price * ticket.quantity : 0 }}€</td>
+														<td>
+															{{ reservation.status.value }}
+														</td>
+														<td>
+															
+															{% if ticket.representation and ticket.representation.schedule|date('Y-m-d H:i') < "now"|date('Y-m-d H:i') and reservation.status.value == 'accepted' %}
+																<a href="{{ path('app_review_new', {'id': ticket.representation.representationShow.id }) }}">Commenter</a>
+															{% endif %}
+														</td>
+													</tr>
+												{% endfor %}
 											{% endfor %}
 										</tbody>
 									</table>

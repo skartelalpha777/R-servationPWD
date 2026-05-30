@@ -42,7 +42,7 @@ final class RepresentationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_representation_show', methods: ['GET'])]
+    #[Route('/{id<\d+>}', name: 'app_representation_show', methods: ['GET'])]
     public function show(Representation $representation): Response
     {
         return $this->render('representation/show.html.twig', [
@@ -50,7 +50,7 @@ final class RepresentationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_representation_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id<\d+>}/edit', name: 'app_representation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Representation $representation, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(RepresentationType::class, $representation);
@@ -68,7 +68,7 @@ final class RepresentationController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_representation_delete', methods: ['POST'])]
+    #[Route('/{id<\d+>}', name: 'app_representation_delete', methods: ['POST'])]
     public function delete(Request $request, Representation $representation, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$representation->getId(), $request->getPayload()->getString('_token'))) {
