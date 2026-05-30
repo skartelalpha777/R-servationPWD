@@ -31,9 +31,9 @@ class ReservationType extends AbstractType
                 'choice_label' => function (Representation $representation) {
 
                     $titre = $representation->getRepresentationShow() ? $representation->getRepresentationShow()->getTitle() : 'Spectacle inconnu';
-                    $prix =  $representation->getPrice() ? $representation->getPrice() . ' €' : 'Prix non défini';
+                    
                     $showTime = $representation->getSchedule() ? $representation->getSchedule()->format('d/m/Y à H:i') : 'Date inconnue';
-                    return $titre . ' - Date : ' . $showTime . '   Prix : ' . $prix;
+                    return $titre . ' - Date : ' . $showTime ;
                 },
                 'multiple' => true,
                 'mapped' => false,
@@ -47,7 +47,7 @@ class ReservationType extends AbstractType
 
                     $type = $prix->getType() ? $prix->getType()->value : 'Type indefini';
                     $prix = $prix->getPrice() ? $prix->getPrice() : 'Prix indefini';
-                    return 'Type: ' . $type . 'Prix : ' . $prix;
+                    return 'Type: ' . $type . '  Prix : ' . $prix.' €';
                 },
                 'multiple' => true,
                 'mapped' => false,

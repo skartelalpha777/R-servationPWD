@@ -39,6 +39,7 @@ final class ReservationController extends AbstractController
             $entityManager->persist($reservation);
             $quantity = $form->get('quantity')->getData();
             $selectedRepresentations = $form->get('representations')->getData();
+            $selectedPrice = $form->get('price')->getData();
 
             foreach ($selectedRepresentations as $representation) {
                 $rp = new RepresentationReservation();
@@ -46,9 +47,11 @@ final class ReservationController extends AbstractController
                 $rp->setReservation($reservation);
                 $rp->setRepresentation($representation);
 
-               // dd($representation->getPrice());
-             //   $rp->setPrice($representation->getPrice());
+                // dd($representation->getPrice());
 
+                foreach ($selectedPrice as $price) {
+                    $rp->setPrice($price);
+                }
                 $entityManager->persist($rp);
             }
 
