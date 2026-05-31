@@ -2,29 +2,26 @@
 
 namespace App\Entity;
 
-use App\Repository\ArtistRepository;
+use App\Repository\TypeRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ArtistRepository::class)]
-class Artist
+#[ORM\Entity(repositoryClass: TypeRepository::class)]
+class Type
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $firstname = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $lastname = null;
+    #[ORM\Column(length: 60)]
+    private ?string $type = null;
 
     /**
      * @var Collection<int, ArtisType>
      */
-    #[ORM\OneToMany(targetEntity: ArtisType::class, mappedBy: 'artist')]
+    #[ORM\OneToMany(targetEntity: ArtisType::class, mappedBy: 'type')]
     private Collection $artisTypes;
 
     public function __construct()
@@ -34,33 +31,20 @@ class Artist
 
  
 
-   
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getFirstname(): ?string
+    public function getType(): ?string
     {
-        return $this->firstname;
+        return $this->type;
     }
 
-    public function setFirstname(string $firstname): static
+    public function setType(string $type): static
     {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
-    public function getLastname(): ?string
-    {
-        return $this->lastname;
-    }
-
-    public function setLastname(string $lastname): static
-    {
-        $this->lastname = $lastname;
+        $this->type = $type;
 
         return $this;
     }
@@ -77,7 +61,7 @@ class Artist
     {
         if (!$this->artisTypes->contains($artisType)) {
             $this->artisTypes->add($artisType);
-            $artisType->setArtist($this);
+            $artisType->setType($this);
         }
 
         return $this;
@@ -87,11 +71,13 @@ class Artist
     {
         if ($this->artisTypes->removeElement($artisType)) {
             // set the owning side to null (unless already changed)
-            if ($artisType->getArtist() === $this) {
-                $artisType->setArtist(null);
+            if ($artisType->getType() === $this) {
+                $artisType->setType(null);
             }
         }
 
         return $this;
     }
+
+
 }

@@ -66,7 +66,7 @@
 								<a href="{{ path('app_show_show', {'id': show.id}) }}" class="btn btn-outline-secondary btn-sm">En savoir plus</a>
 							{% endif %}
 
-							{% if is_granted('ROLE_ADMINISTRATEUR' ) %}
+							{% if is_granted('ROLE_ADMIN' ) %}
 								<a href="{{ path('app_show_edit', {'id': show.id}) }}" class="btn btn-danger btn-sm mx-1" >Modifier ou supprimer l'évenement</a>
 							{% endif %}
 						</div>

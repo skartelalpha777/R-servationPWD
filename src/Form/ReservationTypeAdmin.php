@@ -13,18 +13,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-class ReservationType extends AbstractType
+class ReservationTypeAdmin extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             //->add('booking_date')
-            // ->add('status')
+             ->add('status')
 
             /* ->add('user', EntityType::class, [
                 'class' => User::class,
                 'choice_label' => 'id',
-            ]) */
+            ]) 
             ->add('representations', EntityType::class, [
                 'class' => Representation::class,
                 'label' => ' ',
@@ -61,7 +61,7 @@ class ReservationType extends AbstractType
 
                 'mapped' => false,
             ])
-            /* ->add('representation', EntityType::class, [
+             ->add('representation', EntityType::class, [
                 'class' => Representation::class,
                 'choice_label' => function (Representation $representation) {
                     $titre = $representation->getRepresentationShow()->getTitle();

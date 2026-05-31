@@ -52,11 +52,25 @@ class Show
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'showReview')]
     private Collection $review;
 
+    /**
+     * @var Collection<int, Price>
+     */
+    #[ORM\ManyToMany(targetEntity: Price::class, mappedBy: 'shows')]
+    private Collection $prices;
+
+    /**
+     * @var Collection<int, ArtisTypeShow>
+     */
+    #[ORM\OneToMany(targetEntity: ArtisTypeShow::class, mappedBy: 'theShow')]
+    private Collection $artisTypeShows;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
         $this->created_in = new \DateTime();
         $this->review = new ArrayCollection();
+        $this->prices = new ArrayCollection();
+        $this->artisTypeShows = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -214,6 +228,63 @@ class Show
             // set the owning side to null (unless already changed)
             if ($showReview->getShowReview() === $this) {
                 $showReview->setShowReview(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Price>
+     */
+    public function getPrices(): Collection
+    {
+        return $this->prices;
+    }
+
+    public function addPrice(Price $price): static
+    {
+        if (!$this->prices->contains($price)) {
+            $this->prices->add($price);
+            $price->addShow($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrice(Price $price): static
+    {
+        if ($this->prices->removeElement($price)) {
+            $price->removeShow($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ArtisTypeShow>
+     */
+    public function getArtisTypeShows(): Collection
+    {
+        return $this->artisTypeShows;
+    }
+
+    public function addArtisTypeShow(ArtisTypeShow $artisTypeShow): static
+    {
+        if (!$this->artisTypeShows->contains($artisTypeShow)) {
+            $this->artisTypeShows->add($artisTypeShow);
+            $artisTypeShow->setTheShow($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArtisTypeShow(ArtisTypeShow $artisTypeShow): static
+    {
+        if ($this->artisTypeShows->removeElement($artisTypeShow)) {
+            // set the owning side to null (unless already changed)
+            if ($artisTypeShow->getTheShow() === $this) {
+                $artisTypeShow->setTheShow(null);
             }
         }
 

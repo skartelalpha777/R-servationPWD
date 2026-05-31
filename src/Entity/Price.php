@@ -35,10 +35,17 @@ class Price
     #[ORM\OneToMany(targetEntity: RepresentationReservation::class, mappedBy: 'price')]
     private Collection $representationReservations;
 
+    /**
+     * @var Collection<int, Show>
+     */
+    #[ORM\ManyToMany(targetEntity: Show::class, inversedBy: 'prices')]
+    private Collection $shows;
+
     public function __construct()
     {
         $this->representationReservations = new ArrayCollection();
         $this->start_date = new \DateTime();
+        $this->shows = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -120,6 +127,30 @@ class Price
                 $representationReservation->setPrice(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Show>
+     */
+    public function getShows(): Collection
+    {
+        return $this->shows;
+    }
+
+    public function addShow(Show $show): static
+    {
+        if (!$this->shows->contains($show)) {
+            $this->shows->add($show);
+        }
+
+        return $this;
+    }
+
+    public function removeShow(Show $show): static
+    {
+        $this->shows->removeElement($show);
 
         return $this;
     }

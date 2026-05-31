@@ -83,16 +83,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // dd($liste);
 
         // 3. On ajoute TOUJOURS le rôle par défaut "ROLE_USER"
-        $liste[] = 'ROLE_USER';
+        else {
+            $liste[] = 'ROLE_USER';
+        }
 
         // 4. On renvoie le tableau final sans doublons
         return array_unique($liste);
     }
 
-       public function getRole(): ?Roles
+    public function getRole(): ?Roles
     {
         return $this->role;
-    }
+    
+        }
 
     public function setRole(Roles $role): static
     {

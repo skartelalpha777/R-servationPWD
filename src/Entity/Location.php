@@ -42,6 +42,9 @@ class Location
     #[ORM\OneToMany(targetEntity: Representation::class, mappedBy: 'location')]
     private Collection $representations;
 
+    #[ORM\ManyToOne(inversedBy: 'locations')]
+    private ?Locality $locality = null;
+
     public function __construct()
     {
         $this->shows = new ArrayCollection();
@@ -169,6 +172,18 @@ class Location
                 $representation->setLocation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLocality(): ?Locality
+    {
+        return $this->locality;
+    }
+
+    public function setLocality(?Locality $locality): static
+    {
+        $this->locality = $locality;
 
         return $this;
     }

@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Reservation;
 use App\Entity\RepresentationReservation;
+use App\Entity\Show;
 use App\Form\ReservationType;
+use App\Form\ReservationTypeAdmin;
 use App\Repository\ReservationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,13 +26,18 @@ final class ReservationController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/{id}/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, Show $show): Response
     {
 
         $rp = new RepresentationReservation();
         $reservation = new Reservation();
-        $form = $this->createForm(ReservationType::class, $reservation);
+        $form = $this->createForm(ReservationType::class, $reservation, [
+            'representations' => $show->getReservations(), //-> On envoi la liste pré-filtrée des represenations pour chercher dans la DB
+            // Ainsi dans le formulaire affichera que les répresentations liées au Show courant lors de la reservation
+            'prices' => $show->getPrices(), //-> On envoi la liste pré-filtrée des Prix pour chercher dans la DB, 
+            //Ainsi on affiche que les prix liés au Show courant lors de la reservation pour un Show 
+        ]);
         $form->handleRequest($request);
 
 
@@ -73,14 +80,16 @@ final class ReservationController extends AbstractController
             'reservation' => $reservation,
         ]);
     }
-    //#[IsGranted('ROLE_ADMIN')]
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}/edit', name: 'app_reservation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(ReservationType::class, $reservation);
+        // dd($this->getUser());
+        $form = $this->createForm(ReservationTypeAdmin::class, $reservation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
@@ -91,7 +100,7 @@ final class ReservationController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'app_reservation_delete', methods: ['POST'])]
     public function delete(Request $request, Reservation $reservation, EntityManagerInterface $entityManager): Response
     {
