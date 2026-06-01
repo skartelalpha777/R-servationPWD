@@ -17,7 +17,7 @@ class ReviewType extends AbstractType
         $builder
             ->add('review')
             ->add('stars')
-            ->add('validated')
+          //  ->add('validated')
             //  ->add('createdAt')
             //  ->add('updatedAt')
             /*  ->add('showReview', EntityType::class, [

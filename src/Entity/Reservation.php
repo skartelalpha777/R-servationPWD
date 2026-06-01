@@ -28,7 +28,7 @@ class Reservation
     /**
      * @var Collection<int, RepresentationReservation>
      */
-    #[ORM\OneToMany(targetEntity: RepresentationReservation::class, mappedBy: 'reservation')]
+    #[ORM\OneToMany(targetEntity: RepresentationReservation::class, mappedBy: 'reservation', cascade:['remove','persist'], orphanRemoval:true)]
     private Collection $representationReservations;
 
     function __construct()

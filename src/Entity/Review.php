@@ -39,6 +39,7 @@ class Review
     function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->validated = 0;
     }
     public function getId(): ?int
     {
@@ -69,12 +70,12 @@ class Review
         return $this;
     }
 
-    public function isValidated(): ?bool
+    public function isValidated(): ?int
     {
         return $this->validated;
     }
 
-    public function setValidated(bool $validated): static
+    public function setValidated(int $validated): static
     {
         $this->validated = $validated;
 

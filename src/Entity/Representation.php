@@ -27,9 +27,7 @@ class Representation
     #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'representation')]
     private Collection $reservations;
 
-    #[ORM\Column(nullable: false)]
-    private ?float $Price = null;
-
+ 
     #[ORM\ManyToOne(inversedBy: 'representations')]
     private ?Location $location = null;
 
