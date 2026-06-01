@@ -72,18 +72,6 @@ class Representation
         return $this;
     }
 
-    public function getPrice(): ?float
-    {
-        return $this->Price;
-    }
-
-    public function setPrice(?float $Price): static
-    {
-        $this->Price = $Price;
-
-        return $this;
-    }
-
     public function getLocation(): ?Location
     {
         return $this->location;
