@@ -67,8 +67,9 @@ final class UserController extends AbstractController
             'user' => $user,
         ]);
     }
+
     #[isGranted('ROLE_ADMIN')]
-    #[Route('/{id<\d+>}/edit', name: 'app_user_edit_admin', methods: ['GET', 'POST'])]
+    #[Route('/{id<\d+>}/edit/admin', name: 'app_user_edit_admin', methods: ['GET', 'POST'])]
     public function editAdmin(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(UserTypeAdmin::class, $user);
@@ -89,6 +90,7 @@ final class UserController extends AbstractController
             'form' => $form,
         ]);
     }
+
     #[Route('/{id<\d+>}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {

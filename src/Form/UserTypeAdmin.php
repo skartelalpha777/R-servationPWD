@@ -11,8 +11,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\Choice;
-use Symfony\Component\Validator\Constraints\EmailValidator;
+
 
 class UserTypeAdmin extends AbstractType
 {
@@ -21,14 +20,9 @@ class UserTypeAdmin extends AbstractType
         $builder
             ->add('email', EmailType::class)
             // ->add('roles')
-            ->add('password', PasswordType::class)
+             ->add('password', PasswordType::class)
             ->add('firstname')
-            ->add('lastname')
-            /*   ->add('role', EnumType::class, [
-                'class' => Roles::class,
-                'choice_label' => fn(Roles $choice) => $choice->value,
-                'label' => 'Rôle de l\'utilisateur'
-            ])*/
+            ->add('lastname')    
             ->add('role', ChoiceType::class, [
                 'choices' => [
                     'Producteur' => Roles::Producteur,
