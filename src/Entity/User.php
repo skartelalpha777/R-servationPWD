@@ -54,6 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
+        $this->role = Roles::Membre;
         $this->reservations = new ArrayCollection();
         $this->reviews = new ArrayCollection();
     }
@@ -94,8 +95,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRole(): ?Roles
     {
         return $this->role;
-    
-        }
+    }
 
     public function setRole(Roles $role): static
     {
