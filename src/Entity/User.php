@@ -20,7 +20,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 180, nullable:false, unique:true)]
+    #[ORM\Column(length: 180, nullable: false, unique: true)]
     private ?string $email = null;
 
     #[ORM\Column(enumType: Roles::class)]
@@ -29,13 +29,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var string The hashed password
      */
-    #[ORM\Column(nullable:false)]
+    #[ORM\Column(nullable: false)]
     private ?string $password = null;
 
     #[ORM\Column(length: 255, nullable: false)]
     private ?string $firstname = null;
 
-    #[ORM\Column(length: 255,nullable: false )]
+    #[ORM\Column(length: 255, nullable: false)]
     private ?string $lastname = null;
 
 
@@ -43,7 +43,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var Collection<int, Reservation>
      */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user',cascade:['remove','persit'])]
+    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'user', cascade: ['remove', 'persit'])]
     private Collection $reservations;
 
     /**

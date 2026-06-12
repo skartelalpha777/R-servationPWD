@@ -16,10 +16,10 @@ class Reservation
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column]
+    #[ORM\Column(nullable: false)]
     private ?\DateTime $booking_date = null;
 
-    #[ORM\Column(enumType: Status::class)]
+    #[ORM\Column(enumType: Status::class, nullable: false)]
     private ?Status $status = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
@@ -28,7 +28,7 @@ class Reservation
     /**
      * @var Collection<int, RepresentationReservation>
      */
-    #[ORM\OneToMany(targetEntity: RepresentationReservation::class, mappedBy: 'reservation', cascade:['remove','persist'], orphanRemoval:true)]
+    #[ORM\OneToMany(targetEntity: RepresentationReservation::class, mappedBy: 'reservation', cascade: ['remove', 'persist'], orphanRemoval: true)]
     private Collection $representationReservations;
 
     function __construct()
