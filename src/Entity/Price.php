@@ -21,7 +21,7 @@ class Price
     #[ORM\Column(enumType: TicketType::class)]
     private ?TicketType $type = null;
 
-    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 0)]
+    #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 2)]
       #[Assert\PositiveOrZero(message:'le prix ne peut pas etre negatif')]
     private ?string $price = null;
 
