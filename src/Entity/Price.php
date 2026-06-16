@@ -18,7 +18,7 @@ class Price
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(enumType: self::class)]
+    #[ORM\Column(enumType: TicketType::class)]
     private ?TicketType $type = null;
 
     #[ORM\Column(type: Types::DECIMAL, precision: 10, scale: 0)]
