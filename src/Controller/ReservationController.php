@@ -33,7 +33,7 @@ final class ReservationController extends AbstractController
         $rp = new RepresentationReservation();
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation, [
-            'representations' => $show->getReservations(), //-> On envoi la liste pré-filtrée des represenations pour chercher dans la DB
+            'representations' => $show->getRepresentations(), //-> On envoi la liste pré-filtrée des represenations pour chercher dans la DB
             // Ainsi dans le formulaire affichera que les répresentations liées au Show courant lors de la reservation
             'prices' => $show->getPrices(), //-> On envoi la liste pré-filtrée des Prix pour chercher dans la DB, 
             //Ainsi on affiche que les prix liés au Show courant lors de la reservation pour un Show 
