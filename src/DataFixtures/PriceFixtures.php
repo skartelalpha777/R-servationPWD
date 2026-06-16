@@ -26,7 +26,7 @@ class PriceFixtures extends Fixture  implements DependentFixtureInterface
                 'type' => TicketType::Enfant,
                 'price' => '10.00',
                 'start_date' => '2024-01-01 00:00:00',
-                'end_date' => '',
+                'end_date' => '2025-08-12 15:00:00',
                 'ref' => 'Enfant',
                 'show_ref' => 'ayiti'
 
@@ -35,7 +35,7 @@ class PriceFixtures extends Fixture  implements DependentFixtureInterface
                 'type' => TicketType::Senior,
                 'price' => '8.00',
                 'start_date' => '2024-01-01 00:00:00',
-                'end_date' => '',
+                'end_date' => '2026-10-31 15:00:00',
                 'ref' => 'Senior',
                 'show_ref' => 'cible-mouvante'
 
