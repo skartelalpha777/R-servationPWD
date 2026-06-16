@@ -9,5 +9,5 @@ enum TicketType: string
 
     case Standard = 'Standart';
     case Enfant = 'Enfant';
-    case Adulte = 'Adulte';
+    case Senior = 'Senior';
 }
