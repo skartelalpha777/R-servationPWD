@@ -1,46 +1,55 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Show{% endblock %}
+{% block title %}{{ show.title }} - Détails{% endblock %}
 
 {% block body %}
-    <h1>Show</h1>
+<div class="container mt-4">
+    <div class="row">
+        
+        <div class="col-md-4 mb-4">
+            
+            {% if  show.posterUrl %}
+                <img src="{{ show.posterUrl }}" alt="Affiche de {{ show.title }}" class="img-fluid rounded shadow">
+            {% elseif show.posterURL is defined and show.posterURL %}
+                <img src="{{ show.posterURL }}" alt="Affiche de {{ show.title }}" class="img-fluid rounded shadow">
+            {% else %}
+                <div class="p-5 bg-light text-center rounded shadow">
+                    <span class="text-muted">Aucune image disponible</span>
+                </div>
+            {% endif %}
+        </div>
+       
+        <div class="col-md-8">
+            <h1 class="mb-3">{{ show.title }}</h1>
+            
+            {% if show.description %}
+                <p class="lead text-muted">{{ show.description|nl2br }}</p>
+            {% endif %}
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ show.id }}</td>
-            </tr>
-            <tr>
-                <th>Slug</th>
-                <td>{{ show.slug }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ show.title }}</td>
-            </tr>
-            <tr>
-                <th>Poster_URL</th>
-                <td>{{ show.posterURL }}</td>
-            </tr>
-            <tr>
-                <th>Duration</th>
-                <td>{{ show.duration }}</td>
-            </tr>
-            <tr>
-                <th>Created_in</th>
-                <td>{{ show.createdIn ? show.createdIn|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Bookable</th>
-                <td>{{ show.bookable ? 'Yes' : 'No' }}</td>
-            </tr>
-        </tbody>
-    </table>
+            <ul class="list-group mb-4 shadow-sm">
+                <li class="list-group-item">
+                    <strong>Durée :</strong> {{ show.duration }} minutes
+                </li>
+                <li class="list-group-item">
+                    <strong>Statut :</strong> 
+                    {% if show.bookable %}
+                        <span class="badge bg-success">Réservable</span>
+                        <button type="button" class="btn btn-primary" onclick="window.location.href='{{path('app_reservation_new',{'id':show.id})}}'">Reserver</button>
+                      
+                    {% else %}
+                        <span class="badge bg-secondary">Non réservable</span>
+                    {% endif %}
+                </li>
+            </ul>
 
-    <a href="{{ path('app_show_index') }}">back to list</a>
-
-    <a href="{{ path('app_show_edit', {'id': show.id}) }}">edit</a>
-
-    {{ include('show/_delete_form.html.twig') }}
+          
+            <div class="d-flex gap-2 align-items-center">
+                
+                <a href="{{ path('app_show_index') }}" class="btn btn-outline-secondary">Retour à la liste</a>
+               
+             
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
