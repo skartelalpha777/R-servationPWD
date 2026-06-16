@@ -22,7 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, nullable: false, unique: true)]
-    #[Assert\NotBlank]
+    #[Assert\Email(message:"vous devez saisir une adresse email valide")]
     private ?string $email = null;
 
     #[ORM\Column(enumType: Roles::class)]
@@ -32,7 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column(nullable: false)]
-    #[Assert\NotBlank]
+   // #[Assert\PasswordStrength]
     private ?string $password = null;
 
     #[ORM\Column(length: 255, nullable: false)]

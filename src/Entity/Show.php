@@ -28,7 +28,7 @@ class Show
     private ?string $poster_URL = null;
 
     #[ORM\Column]
-    #[Assert\Positive(message:'la duree ne peut pas etre négative')]
+    #[Assert\PositiveOrZero(message:'la duree ne peut pas etre négative')]
     private ?int $duration = null;
 
     #[ORM\Column]
