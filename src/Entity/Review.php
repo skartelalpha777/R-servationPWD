@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ReviewRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReviewRepository::class)]
 class Review
@@ -18,6 +19,7 @@ class Review
     private ?string $review = null;
 
     #[ORM\Column]
+    #[Assert\PositiveOrZero(message:'le nombre de etoiles ne peut pas etre negatif')]
     private ?int $stars = null;
 
     #[ORM\Column]
