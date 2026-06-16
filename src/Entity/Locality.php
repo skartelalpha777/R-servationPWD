@@ -27,7 +27,7 @@ class Locality
     /**
      * @var Collection<int, Location>
      */
-    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'locality')]
+    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'locality',cascade: ['remove', 'persist'])]
     private Collection $locations;
 
     public function __construct()

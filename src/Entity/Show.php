@@ -40,7 +40,7 @@ class Show
     /**
      * @var Collection<int, Representation>
      */
-    #[ORM\OneToMany(targetEntity: Representation::class, mappedBy: 'representationShow')]
+    #[ORM\OneToMany(targetEntity: Representation::class, mappedBy: 'representationShow',cascade: ['remove', 'persist'])]
     private Collection $representations;
 
     #[ORM\ManyToOne(inversedBy: 'shows')]
@@ -52,13 +52,13 @@ class Show
     /**
      * @var Collection<int, Review>
      */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'showReview')]
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'showReview',cascade: ['remove', 'persist'])]
     private Collection $review;
 
     /**
      * @var Collection<int, Price>
      */
-    #[ORM\ManyToMany(targetEntity: Price::class, mappedBy: 'shows')]
+    #[ORM\ManyToMany(targetEntity: Price::class, mappedBy: 'shows',cascade: ['remove', 'persist'])]
     private Collection $prices;
 
     /**
