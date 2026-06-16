@@ -38,7 +38,7 @@ class Show
      * @var Collection<int, Representation>
      */
     #[ORM\OneToMany(targetEntity: Representation::class, mappedBy: 'representationShow')]
-    private Collection $reservations;
+    private Collection $representations;
 
     #[ORM\ManyToOne(inversedBy: 'shows')]
     private ?Location $location = null;
@@ -66,7 +66,7 @@ class Show
 
     public function __construct()
     {
-        $this->reservations = new ArrayCollection();
+        $this->representations = new ArrayCollection();
         $this->created_in = new \DateTime();
         $this->review = new ArrayCollection();
         $this->prices = new ArrayCollection();
@@ -153,27 +153,27 @@ class Show
     /**
      * @return Collection<int, Representation>
      */
-    public function getReservations(): Collection
+    public function getRepresentations(): Collection
     {
-        return $this->reservations;
+        return $this->representations;
     }
 
-    public function addReservation(Representation $reservation): static
+    public function addRepresentation(Representation $representation): static
     {
-        if (!$this->reservations->contains($reservation)) {
-            $this->reservations->add($reservation);
-            $reservation->setRepresentationShow($this);
+        if (!$this->representations->contains($representation)) {
+            $this->representations->add($representation);
+            $representation->setRepresentationShow($this);
         }
 
         return $this;
     }
 
-    public function removeReservation(Representation $reservation): static
+    public function removeRepresentation(Representation $representation): static
     {
-        if ($this->reservations->removeElement($reservation)) {
+        if ($this->representations->removeElement($representation)) {
             // set the owning side to null (unless already changed)
-            if ($reservation->getRepresentationShow() === $this) {
-                $reservation->setRepresentationShow(null);
+            if ($representation->getRepresentationShow() === $this) {
+                $representation->setRepresentationShow(null);
             }
         }
 

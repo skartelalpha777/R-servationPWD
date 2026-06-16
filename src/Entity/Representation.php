@@ -18,14 +18,8 @@ class Representation
     #[ORM\Column]
     private ?\DateTime $schedule = null;
 
-    #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\ManyToOne(inversedBy: 'representations')]
     private ?Show $representationShow = null;
-
-    /**
-     * @var Collection<int, Reservation>
-     */
-    #[ORM\OneToMany(targetEntity: Reservation::class, mappedBy: 'representation')]
-    private Collection $reservations;
 
  
     #[ORM\ManyToOne(inversedBy: 'representations')]
@@ -39,7 +33,6 @@ class Representation
 
     public function __construct()
     {
-        $this->reservations = new ArrayCollection();
         $this->representationReservations = new ArrayCollection();
     }
 
