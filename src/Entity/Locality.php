@@ -6,6 +6,7 @@ use App\Repository\LocalityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: LocalityRepository::class)]
 class Locality
@@ -16,9 +17,11 @@ class Locality
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
+     #[Assert\NotBlank(message:'le code postal ne peut pas etre vide')]
     private ?string $postalcode = null;
 
     #[ORM\Column(length: 60)]
+    #[Assert\NotBlank(message:'la ville ne peut pas etre vide')]
     private ?string $locality = null;
 
     /**
