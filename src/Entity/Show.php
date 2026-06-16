@@ -6,6 +6,7 @@ use App\Repository\ShowRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ShowRepository::class)]
 #[ORM\Table(name: '`show`')]
@@ -20,12 +21,14 @@ class Show
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:'le titre ne peut pas etre vide')]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $poster_URL = null;
 
     #[ORM\Column]
+    #[Assert\Positive(message:'la duree ne peut pas etre négative')]
     private ?int $duration = null;
 
     #[ORM\Column]
