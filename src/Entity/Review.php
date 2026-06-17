@@ -18,8 +18,12 @@ class Review
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $review = null;
 
-    #[ORM\Column]
-    #[Assert\PositiveOrZero(message:'le nombre de etoiles ne peut pas etre negatif')]
+    #[ORM\Column(nullable:false)]
+    #[Assert\Range(
+        min: 0,
+        max: 5,
+        notInRangeMessage: 'La note doit être comprise entre {{ min }} et {{ max }} étoiles.'
+    )]
     private ?int $stars = null;
 
     #[ORM\Column]
