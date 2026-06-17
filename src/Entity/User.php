@@ -22,7 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, nullable: false, unique: true)]
-    #[Assert\Email(message:"vous devez saisir une adresse email valide")]
+    #[Assert\Email(message: "vous devez saisir une adresse email valide")]
     private ?string $email = null;
 
     #[ORM\Column(enumType: Roles::class)]
@@ -32,7 +32,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column(nullable: false)]
-   // #[Assert\PasswordStrength]
+    // #[Assert\PasswordStrength]
     private ?string $password = null;
 
     #[ORM\Column(length: 255, nullable: false)]
@@ -84,15 +84,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 
         if ($this->role) {
-            $liste[] = 'ROLE_' . strtoupper($this->role->value);
+            $liste[] = $this->role->value;
         }
-        // dd($liste);
-
         // 3. On ajoute TOUJOURS le rôle par défaut "ROLE_USER"
         else {
-            $liste[] = 'ROLE_USER';
+            $liste[] = 'ROLE_MEMBRE';
         }
-
         // 4. On renvoie le tableau final sans doublons
         return array_unique($liste);
     }
