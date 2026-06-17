@@ -30,8 +30,12 @@ final class ReservationController extends AbstractController
     #[Route('/{id}/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Show $show): Response
     {
+        if ($show->getRepresentations()->getValues() == null) {
+            $this->addFlash('notice', 'Aucune represenation n\'est prevu pour ce specatcle, Revenez plus tard');
+            return $this->redirectToRoute('app_show_show', ['id' => $show->getId()], Response::HTTP_SEE_OTHER);
+        }
 
-        $rp = new RepresentationReservation();
+     //   $rp = new RepresentationReservation();
         $reservation = new Reservation();
         $form = $this->createForm(ReservationType::class, $reservation, [
             'representations' => $show->getRepresentations(), //-> On envoi la liste pré-filtrée des represenations pour chercher dans la DB
