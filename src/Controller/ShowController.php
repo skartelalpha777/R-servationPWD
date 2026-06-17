@@ -22,7 +22,7 @@ final class ShowController extends AbstractController
             'shows' => $showRepository->findAll(),
         ]);
     }
-
+    #[IsGranted('ROLE_PRODUCTEUR')]
     #[Route('new', name: 'app_show_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
