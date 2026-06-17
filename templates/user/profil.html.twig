@@ -47,9 +47,16 @@
 
 
 			<div class="col-md-8 mb-4">
+				{% for message in app.flashes('notice') %}
+					<div class="flash-notice">
+						{{ message }}
+					</div>
+				{% endfor %}
+
 				<div class="card shadow-sm h-100">
 					<div class="card-header bg-success-emphasis">
 						<h5 class="card-title mb-0">Mes Réservations</h5>
+
 					</div>
 					<div class="card-body p-0">
 						{% if app.user.reservations is not empty %}
