@@ -5,9 +5,9 @@ namespace App\Enum;
 enum Roles: string
 {
 
-    case Producteur = 'producteur';
-    case Administrateur = 'admin';
-    case Membre = 'membre';
+    case Producteur = 'ROLE_PRODUCTEUR';
+    case Administrateur = 'ROLE_ADMIN';
+    case Membre = 'ROLE_MEMBRE';
 
     /*
      * @return Le roles mais avec une Majuscule lors de l'affichage 
