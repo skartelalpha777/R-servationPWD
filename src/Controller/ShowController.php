@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/')]
 final class ShowController extends AbstractController
@@ -41,8 +42,8 @@ final class ShowController extends AbstractController
             'form' => $form,
         ]);
     }
-    
-// ici on precise que l'id doit etre obligatoirement un entier
+
+    // ici on precise que l'id doit etre obligatoirement un entier
     #[Route('/{id<\d+>}', name: 'app_show_show', methods: ['GET'])]
     public function show(Show $show): Response
     {
@@ -50,7 +51,7 @@ final class ShowController extends AbstractController
             'show' => $show,
         ]);
     }
-
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id<\d+>}/edit', name: 'app_show_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Show $show, EntityManagerInterface $entityManager): Response
     {
@@ -68,11 +69,11 @@ final class ShowController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id<\d+>}', name: 'app_show_delete', methods: ['POST'])]
     public function delete(Request $request, Show $show, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$show->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $show->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($show);
             $entityManager->flush();
         }
