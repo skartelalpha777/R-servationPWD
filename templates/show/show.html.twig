@@ -23,6 +23,12 @@
 			</div>
 
 			<div class="col-md-8">
+				{% for message in app.flashes('notice') %}
+					<div class="flash-notice">
+						{{ message }}
+					</div>
+				{% endfor %}
+
 				<h1 class="mb-3">{{ show.title }}</h1>
 
 				{% if show.description %}
@@ -44,7 +50,7 @@
 						{% else %}
 							<span class="text-muted">À définir</span>
 						{% endif %}
-						</li>
+					</li>
 					<li class="list-group-item">
 						<strong>Statut :</strong>
 						{% if show.bookable %}
