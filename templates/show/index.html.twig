@@ -10,14 +10,17 @@
 		<div class="row">
 			{% for show in shows %}
 				<div class="col-md-4 mb-4">
+
 					<div class="card h-100 shadow-sm">
 
 						{% if show.posterURL %}
-
-							<img src="{{ show.posterURL }}" class="card-img-top" style="object-fit: cover; height: 250px;">
+							<a href="{{path('app_show_show',{'id':show.id})}}">
+								<img src="{{ show.posterURL }}" class="card-img-top" style="object-fit: cover; height: 250px;">
+							</a>
 						{% else %}
 							<div class="card-img-top bg-light text-secondary d-flex align-items-center justify-content-center" style="height: 250px;">
 								<span>Aucune affiche</span>
+								<a href="{{path('app_show_show',{'id':show.id})}}">Consulter le spectacle</a>
 							</div>
 						{% endif %}
 
@@ -67,7 +70,7 @@
 							{% endif %}
 
 							{% if is_granted('ROLE_ADMIN' ) %}
-								<a href="{{ path('app_show_edit', {'id': show.id}) }}" class="btn btn-danger btn-sm mx-1" >Modifier ou supprimer l'évenement</a>
+								<a href="{{ path('app_show_edit', {'id': show.id}) }}" class="btn btn-danger btn-sm mx-1">Modifier ou supprimer l'évenement</a>
 							{% endif %}
 						</div>
 					</div>
