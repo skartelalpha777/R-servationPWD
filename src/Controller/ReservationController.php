@@ -25,7 +25,7 @@ final class ReservationController extends AbstractController
             'reservations' => $reservationRepository->findAll(),
         ]);
     }
-
+    #[IsGranted('ROLE_MEMBRE')]
     #[Route('/{id}/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Show $show): Response
     {
