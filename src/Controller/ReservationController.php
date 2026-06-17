@@ -18,6 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/reservation')]
 final class ReservationController extends AbstractController
 {
+    #[IsGranted('ROLE_ADMIN')]
     #[Route(name: 'app_reservation_index', methods: ['GET'])]
     public function index(ReservationRepository $reservationRepository): Response
     {
@@ -25,7 +26,7 @@ final class ReservationController extends AbstractController
             'reservations' => $reservationRepository->findAll(),
         ]);
     }
-    #[IsGranted('ROLE_MEMBRE')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/{id}/new', name: 'app_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Show $show): Response
     {
@@ -63,8 +64,9 @@ final class ReservationController extends AbstractController
             }
 
             $entityManager->flush();
+            $this->addFlash('notice', 'Votre reservation a bien été prise en compte. Vous trouverai ci-dessous la liste de vos réservation');
 
-            return $this->redirectToRoute('app_reservation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_user_profil', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('reservation/new.html.twig', [
@@ -72,7 +74,7 @@ final class ReservationController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'app_reservation_show', methods: ['GET'])]
     public function show(Reservation $reservation): Response
     {
