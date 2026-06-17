@@ -10,10 +10,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/price')]
 final class PriceController extends AbstractController
 {
+    #[IsGranted('ROLE_ADMIN')]
     #[Route(name: 'app_price_index', methods: ['GET'])]
     public function index(PriceRepository $priceRepository): Response
     {
@@ -22,6 +24,7 @@ final class PriceController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/new', name: 'app_price_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -42,6 +45,7 @@ final class PriceController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'app_price_show', methods: ['GET'])]
     public function show(Price $price): Response
     {
@@ -49,7 +53,8 @@ final class PriceController extends AbstractController
             'price' => $price,
         ]);
     }
-
+    
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}/edit', name: 'app_price_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Price $price, EntityManagerInterface $entityManager): Response
     {
@@ -68,10 +73,11 @@ final class PriceController extends AbstractController
         ]);
     }
 
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'app_price_delete', methods: ['POST'])]
     public function delete(Request $request, Price $price, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$price->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $price->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($price);
             $entityManager->flush();
         }
