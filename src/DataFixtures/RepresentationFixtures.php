@@ -21,6 +21,7 @@ class RepresentationFixtures extends Fixture implements DependentFixtureInterfac
             ['show' => 'stomp', 'schedule' => '2026-05-30 20:30:00', 'location-slug' => 'dexia-art-center'],
             ['show' => 'cible-mouvante', 'schedule' => '2026-05-30 20:30:00', 'location-slug' => 'la-samaritaine'],
             ['show' => 'guarattelle-di-pulcinella', 'schedule' => '2026-08-30 20:30:00', 'location-slug' => 'dexia-art-center'],
+            ['show' => 'guarattelle-di-pulcinella', 'schedule' => '2026-05-30 20:30:00', 'location-slug' => 'dexia-art-center'],
         ];
 
         foreach ($data as $record) {

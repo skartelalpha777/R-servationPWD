@@ -30,6 +30,12 @@ final class ReviewController extends AbstractController
     #[Route('/{id}/new', name: 'app_review_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, Show $show): Response
     {
+        if ($show->getRepresentations()->get(0)->getSchedule() > new \DateTime()) {
+            
+            $this->addFlash('notice', 'Ce spectacle ne peut pas être noté car il n\'a pas encore eu lieu');
+           // dd('ok');
+            return  $this->redirectToRoute('app_user_profil', [], Response::HTTP_SEE_OTHER);
+        }
         $review = new Review();
         $form = $this->createForm(ReviewType::class, $review);
         $form->handleRequest($request);
@@ -40,8 +46,8 @@ final class ReviewController extends AbstractController
             $entityManager->persist($review);
             $entityManager->flush();
 
-            $this->addFlash('notice',"Nous avons bien reçu votre avis sur ce spectacle. Merci! ");
-            return $this->redirectToRoute('app_show_show', ['id'=>$show->getId()], Response::HTTP_SEE_OTHER);
+            $this->addFlash('notice', "Nous avons bien reçu votre avis sur ce spectacle. Merci! ");
+            return $this->redirectToRoute('app_show_show', ['id' => $show->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('review/new.html.twig', [
