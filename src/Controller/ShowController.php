@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Show;
 use App\Form\ShowType;
 use App\Repository\ShowRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,93 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/')]
 final class ShowController extends AbstractController
 {
+
+    #[Route(name: 'app_show_search', methods: ['GET', 'POST'])]
+    public function search(ShowRepository $showRepository, Request $request): Response
+    {
+        $submittedToken = $request->getPayload()->get('token');
+        if ($this->isCsrfTokenValid('recherche', $submittedToken)) {
+            $date = new DateTime();
+
+            $tab = [];
+            if (!empty($request->request->get('search'))) {
+                $mot = $request->request->get('search');
+                foreach ($showRepository->findAll() as $show) {
+                    if (str_contains(strtolower($show->getTitle()), strtolower($mot))) {
+                        $tab[] = $show;
+                    }
+                }
+            }
+            // dd($tab);
+        }
+        if (empty($request->request->get('search'))) {
+            $tab = $showRepository->findAll();
+        }
+        $filtred = [];
+        if (!empty($request->request->get('date'))) {
+            $choiced = $request->request->get('date');
+            foreach ($tab as $show) {
+                switch ($choiced) {
+
+                    case '1':
+                        foreach ($show->getRepresentations() as $representation) {
+                            if (
+                                $representation->getSchedule()->format('Y-m-d')
+                                === $date->format('Y-m-d')
+                            ) {
+                                $filtred[] = $show;
+                                break;
+                            }
+                        }
+                        break;
+                    case '2':
+                        foreach ($show->getRepresentations() as $representation) {
+                            if (
+                                $representation->getSchedule()->format('W')
+                                === $date->format('W')
+                            ) {
+                                $filtred[] = $show;
+                                break;
+                            }
+                        }
+
+                        break;
+                    case '3':
+                        foreach ($show->getRepresentations() as $representation) {
+                            if (
+                                $representation->getSchedule()->format('m')
+                                === $date->format('m')
+                            ) {
+                                $filtred[] = $show;
+                                break;
+                            }
+                        }
+
+                        break;
+                    case '4':
+                        foreach ($show->getRepresentations() as $representation) {
+                            if (
+                                $representation->getSchedule()->format('y')
+                                === $date->format('y')
+                            ) {
+                                $filtred[] = $show;
+                                break;
+                            }
+                        }
+
+                        break;
+                }
+            }
+            $tab = $filtred;
+        }
+
+
+        return $this->render('show/index.html.twig', [
+            'shows' => $tab,
+        ]);
+    }
+
+
     #[Route(name: 'app_show_index', methods: ['GET'])]
     public function index(ShowRepository $showRepository): Response
     {

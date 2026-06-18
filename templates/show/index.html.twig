@@ -7,19 +7,28 @@
 	<div class="container mt-5">
 		<h1 class="mb-5 text-center">Découvrez nos spectacles</h1>
 
-		<form action="{{path('app_show_index')}}" class="row mb-4" method="post">
+		<form action="{{path('app_show_search')}}" class="row mb-4" method="post">
 			<div class="col-md-3">
-				<select class="form-select">
-					<option selected>Filtre...</option>
-					<option value="1">One</option>
-					<option value="2">Two</option>
+				<select class="form-select" name="date">
+					<option selected>Filtrer par date...</option>
+					<option value="1">Aujourd'huis</option>
+					<option value="2">Cette semaine</option>
+					<option value="3">Ce mois-ci</option>
+					<option value="4">Cette année</option>
+					
+				</select>
+				<select class="form-select " >
+					<option selected>Filtrer par localité...</option>
+					<option value="Schaerbee">Schaerbeek</option>
+					<option value="Etterbeek">Etterbeek</option>
+					<option value="Ixelles">Ixelles</option>
 				</select>
 			</div>
 
 			<div class="col-md-9">
 				<div class="input-group">
-					<input type="search" class="form-control" placeholder="Rechercher un spectacle">
-
+					<input type="search" name="search" class="form-control" placeholder="Rechercher un spectacle">
+					<input type="hidden" name="token" value="{{ csrf_token('recherche') }}">
 					<button type="submit" class="btn btn-primary ms-4">
 						Rechercher
 					</button>
@@ -102,6 +111,8 @@
 					</div>
 				</div>
 			{% endfor %}
+
+
 		</div>
 	</div>
 {% endblock %}
