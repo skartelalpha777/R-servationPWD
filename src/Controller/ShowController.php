@@ -45,7 +45,6 @@ final class ShowController extends AbstractController
             $choiced = $request->request->get('date');
             foreach ($tab as $show) {
                 switch ($choiced) {
-
                     case '1':
                         foreach ($show->getRepresentations() as $representation) {
                             if (
@@ -60,8 +59,8 @@ final class ShowController extends AbstractController
                     case '2':
                         foreach ($show->getRepresentations() as $representation) {
                             if (
-                                $representation->getSchedule()->format('W')
-                                === $date->format('W')
+                                $representation->getSchedule()->format('o-W')
+                                === $date->format('o-W')
                             ) {
                                 $filtred[] = $show;
                                 break;
@@ -84,8 +83,8 @@ final class ShowController extends AbstractController
                     case '4':
                         foreach ($show->getRepresentations() as $representation) {
                             if (
-                                $representation->getSchedule()->format('y')
-                                === $date->format('y')
+                                $representation->getSchedule()->format('Y')
+                                === $date->format('Y')
                             ) {
                                 $filtred[] = $show;
                                 break;
@@ -93,6 +92,28 @@ final class ShowController extends AbstractController
                         }
 
                         break;
+                }
+            }
+            $tab = $filtred;
+            $filtred = [];
+        }
+        //Filtre par localitté
+        if (!empty($request->request->get('locality'))) {
+
+            $locality = $request->request->get('locality');
+            // dd($locality,$tab,$request->request->get('date'));
+            foreach ($tab as $show) {
+                foreach ($show->getRepresentations() as $representation) {
+
+                    if (
+                        $representation->getLocation()
+                        ->getLocality()
+                        ->getLocality()
+                        === $locality
+                    ) {
+                        $filtred[] = $show;
+                        break;
+                    }
                 }
             }
             $tab = $filtred;
