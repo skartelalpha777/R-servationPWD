@@ -7,6 +7,26 @@
 	<div class="container mt-5">
 		<h1 class="mb-5 text-center">Découvrez nos spectacles</h1>
 
+		<form action="{{path('app_show_index')}}" class="row mb-4" method="post">
+			<div class="col-md-3">
+				<select class="form-select">
+					<option selected>Filtre...</option>
+					<option value="1">One</option>
+					<option value="2">Two</option>
+				</select>
+			</div>
+
+			<div class="col-md-9">
+				<div class="input-group">
+					<input type="search" class="form-control" placeholder="Rechercher un spectacle">
+
+					<button type="submit" class="btn btn-primary ms-4">
+						Rechercher
+					</button>
+				</div>
+			</div>
+		</form>
+
 		<div class="row">
 			{% for show in shows %}
 				<div class="col-md-4 mb-4">
