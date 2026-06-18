@@ -25,6 +25,7 @@ final class ShowController extends AbstractController
             $date = new DateTime();
 
             $tab = [];
+            //Recherche par nom
             if (!empty($request->request->get('search'))) {
                 $mot = $request->request->get('search');
                 foreach ($showRepository->findAll() as $show) {
@@ -39,6 +40,7 @@ final class ShowController extends AbstractController
             $tab = $showRepository->findAll();
         }
         $filtred = [];
+        //Filtre par Date
         if (!empty($request->request->get('date'))) {
             $choiced = $request->request->get('date');
             foreach ($tab as $show) {
