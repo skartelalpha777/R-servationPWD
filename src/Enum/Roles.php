@@ -12,12 +12,12 @@ enum Roles: string
     /*
      * @return Le roles mais avec une Majuscule lors de l'affichage 
      */
-  /*  public function getLabel(): string
+    public function getLabel(): string
     {
         return match ($this) {
-            self::Producteur => 'Producteur',
-            self::Administrateur => 'Administrateur',
-            self::Membre => 'Membre'
+            self::Producteur => 'ROLE_PRODUCTEUR',
+            self::Administrateur => 'ROLE_ADMIN',
+            self::Membre => 'ROLE_MEMBRE'
         };
-    } */
+    } 
 }
