@@ -77,4 +77,8 @@ class RepresentationReservation
 
         return $this;
     }
+    function __toString()
+    {
+        return $this->id;
+    }
 }
