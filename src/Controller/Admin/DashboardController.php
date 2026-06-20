@@ -51,5 +51,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(ArtistCrudController::class, 'Artists', 'fa fa-users');
         yield MenuItem::linkTo(PriceCrudController::class, 'Prix', 'fa fa-eur');
         yield MenuItem::linkTo(RepresentationCrudController::class, 'Répresentations', 'fa fa-calendar');
+        yield MenuItem::linkTo(ReservationCrudController::class, 'Réservations', 'fa fa-ticket');
     }
 }
