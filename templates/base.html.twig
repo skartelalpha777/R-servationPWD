@@ -41,17 +41,10 @@
 
 									{% if is_granted('ROLE_ADMIN') %}
 										<li><hr class="dropdown-divider"></li>
+										
+										
 										<li>
-											<h6 class="dropdown-header">Administration</h6>
-										</li>
-										<li>
-											<a class="dropdown-item" href="{{ path('app_user_index') }}">Gestion des utilisateurs</a>
-										</li>
-										<li>
-											<a class="dropdown-item" href="{{ path('app_reservation_index') }}">Gestion des réservations</a>
-										</li>
-										<li>
-											<a class="dropdown-item" href="{{ path('app_show_index') }}">Gestion des spectacles</a>
+											<a class="dropdown-item" href="{{ path('admin') }}">Administration</a>
 										</li>
 									{% endif %}
 

@@ -11,7 +11,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\MoneyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')]
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
@@ -44,7 +46,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Tableau de bord', 'fa fa-home');
-        yield MenuItem::linkTo(UserCrudController::class, 'Utilisateur', 'fa fa-user');
+        yield MenuItem::linkTo(UserCrudController::class, 'Utilisateurs', 'fa fa-user');
         yield MenuItem::linkTo(ShowCrudController::class, 'Spectacles', 'fa fa-list');
         yield MenuItem::linkTo(LocalityCrudController::class, 'Localités', 'fa fa-location-arrow');
         yield MenuItem::linkTo(LocationCrudController::class, 'Lieux', 'fa fa-map-marker');
@@ -52,5 +54,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(PriceCrudController::class, 'Prix', 'fa fa-eur');
         yield MenuItem::linkTo(RepresentationCrudController::class, 'Répresentations', 'fa fa-calendar');
         yield MenuItem::linkTo(ReservationCrudController::class, 'Réservations', 'fa fa-ticket');
+        yield MenuItem::linkTo(ReviewCrudController::class, 'Avis', 'fa fa-commenting-o');
     }
 }

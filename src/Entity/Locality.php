@@ -17,17 +17,17 @@ class Locality
     private ?int $id = null;
 
     #[ORM\Column(length: 60)]
-     #[Assert\NotBlank(message:'le code postal ne peut pas etre vide')]
+    #[Assert\NotBlank(message: 'le code postal ne peut pas etre vide')]
     private ?string $postalcode = null;
 
     #[ORM\Column(length: 60)]
-    #[Assert\NotBlank(message:'la ville ne peut pas etre vide')]
+    #[Assert\NotBlank(message: 'la ville ne peut pas etre vide')]
     private ?string $locality = null;
 
     /**
      * @var Collection<int, Location>
      */
-    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'locality',cascade: ['remove', 'persist'])]
+    #[ORM\OneToMany(targetEntity: Location::class, mappedBy: 'locality', cascade: ['remove', 'persist'])]
     private Collection $locations;
 
     public function __construct()
@@ -92,5 +92,9 @@ class Locality
         }
 
         return $this;
+    }
+    function __toString()
+    {
+        return $this->locality;
     }
 }

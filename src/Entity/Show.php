@@ -17,18 +17,18 @@ class Show
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable:true)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:'le titre ne peut pas etre vide')]
+    #[Assert\NotBlank(message: 'le titre ne peut pas etre vide')]
     private ?string $title = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $poster_URL = null;
 
     #[ORM\Column]
-    #[Assert\PositiveOrZero(message:'la duree ne peut pas etre négative')]
+    #[Assert\PositiveOrZero(message: 'la duree ne peut pas etre négative')]
     private ?int $duration = null;
 
     #[ORM\Column]
@@ -40,7 +40,7 @@ class Show
     /**
      * @var Collection<int, Representation>
      */
-    #[ORM\OneToMany(targetEntity: Representation::class, mappedBy: 'representationShow',cascade: ['remove', 'persist'])]
+    #[ORM\OneToMany(targetEntity: Representation::class, mappedBy: 'representationShow', cascade: ['remove', 'persist'])]
     private Collection $representations;
 
     #[ORM\ManyToOne(inversedBy: 'shows')]
@@ -52,13 +52,13 @@ class Show
     /**
      * @var Collection<int, Review>
      */
-    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'showReview',cascade: ['remove', 'persist'])]
+    #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'showReview', cascade: ['remove', 'persist'])]
     private Collection $review;
 
     /**
      * @var Collection<int, Price>
      */
-    #[ORM\ManyToMany(targetEntity: Price::class, mappedBy: 'shows',cascade: ['remove', 'persist'])]
+    #[ORM\ManyToMany(targetEntity: Price::class, mappedBy: 'shows', cascade: ['remove', 'persist'])]
     private Collection $prices;
 
     /**
@@ -292,5 +292,9 @@ class Show
         }
 
         return $this;
+    }
+    function __toString()
+    {
+        return $this->title;
     }
 }
