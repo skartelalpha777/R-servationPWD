@@ -10,10 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+
 
 #[Route('/representation')]
 final class RepresentationController extends AbstractController
 {
+    #[isGranted('ROLE_ADMIN')]
     #[Route(name: 'app_representation_index', methods: ['GET'])]
     public function index(RepresentationRepository $representationRepository): Response
     {
@@ -22,6 +25,7 @@ final class RepresentationController extends AbstractController
         ]);
     }
 
+    #[isGranted('ROLE_PRODUCTEUR')] // L'amin heirite du role producteur donc il peut acceder a cette page
     #[Route('/new', name: 'app_representation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -41,7 +45,7 @@ final class RepresentationController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[isGranted('ROLE_ADMIN')]
     #[Route('/{id<\d+>}', name: 'app_representation_show', methods: ['GET'])]
     public function show(Representation $representation): Response
     {
@@ -49,7 +53,7 @@ final class RepresentationController extends AbstractController
             'representation' => $representation,
         ]);
     }
-
+    #[isGranted('ROLE_ADMIN')]
     #[Route('/{id<\d+>}/edit', name: 'app_representation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Representation $representation, EntityManagerInterface $entityManager): Response
     {
@@ -67,11 +71,11 @@ final class RepresentationController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[isGranted('ROLE_ADMIN')]
     #[Route('/{id<\d+>}', name: 'app_representation_delete', methods: ['POST'])]
     public function delete(Request $request, Representation $representation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$representation->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $representation->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($representation);
             $entityManager->flush();
         }
