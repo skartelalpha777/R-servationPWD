@@ -10,7 +10,7 @@
 		<form action="{{path('app_show_search')}}" class="row mb-4" method="post">
 			<div class="col-md-3">
 				<select class="form-select" name="date">
-					<option value="">Voir les répresentation...</option>
+					<option value="">Filtrer par répresentation...</option>
 					<option value="1">Aujourd'huis</option>
 					<option value="2">Cette semaine</option>
 					<option value="3">Ce mois-ci</option>
@@ -18,7 +18,7 @@
 
 				</select>
 				<select class="form-select mt-2 " name="locality">
-					<option value="" >Filtrer par localité...</option>
+					<option value="">Filtrer par localité...</option>
 					<option value="Bruxelles">Bruxelles</option>
 					<option value="Laeken">Laeken</option>
 					<option value="Schaerbeek">Schaerbeek</option>
@@ -37,6 +37,14 @@
 						Rechercher
 					</button>
 				</div>
+				<select class="form-select mt-2 " name="Trie">
+					<option value="">Trier par...</option>
+					<option value="dureINC">Durée croissante</option>
+					<option value="dureDESC">Durée décroissante</option>
+					<option value="Date">Date d'ajout</option>
+
+
+				</select>
 			</div>
 		</form>
 
