@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/')]
@@ -38,7 +39,7 @@ final class ShowController extends AbstractController
     }
 
     #[Route(name: 'app_show_search', methods: ['GET', 'POST'])]
-    public function search(ShowRepository $showRepository, Request $request): Response
+    public function search(ShowRepository $showRepository, Request $request, PaginatorInterface $paginator): Response
     {
         $trie = '';
         $submittedToken = $request->getPayload()->get('token');
@@ -168,17 +169,36 @@ final class ShowController extends AbstractController
         }
 
 
+        $shows = $paginator->paginate(
+            $tab,
+            $request->query->getInt('page', 1),
+            9 // nombre de spectacles par page
+        );
+
         return $this->render('show/index.html.twig', [
-            'shows' => $tab,
+            'shows' => $shows,
         ]);
     }
 
 
     #[Route(name: 'app_show_index', methods: ['GET'])]
-    public function index(ShowRepository $showRepository): Response
-    {
+    public function index(
+        ShowRepository $showRepository,
+        Request $request,
+        PaginatorInterface $paginator
+    ): Response {
+
+        $query = $showRepository->createQueryBuilder('s')
+            ->orderBy('s.created_in', 'DESC');
+
+        $shows = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            9 // nombre de spectacles par page
+        );
+
         return $this->render('show/index.html.twig', [
-            'shows' => $showRepository->findAll(),
+            'shows' => $shows,
         ]);
     }
     #[IsGranted('ROLE_PRODUCTEUR')]
