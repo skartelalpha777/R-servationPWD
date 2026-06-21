@@ -16,6 +16,26 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/')]
 final class ShowController extends AbstractController
 {
+    #[Route('/rss/shows', name: 'app_rss_shows')]
+    public function rssShows(ShowRepository $showRepository): Response
+    {
+        $shows = $showRepository->findBy(
+            [],
+            ['created_in' => 'DESC'],
+            20
+        );
+
+        $response = $this->render('rss/shows.xml.twig', [
+            'shows' => $shows,
+        ]);
+
+        $response->headers->set(
+            'Content-Type',
+            'application/rss+xml'
+        );
+
+        return $response;
+    }
 
     #[Route(name: 'app_show_search', methods: ['GET', 'POST'])]
     public function search(ShowRepository $showRepository, Request $request): Response
