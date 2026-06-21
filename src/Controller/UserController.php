@@ -60,7 +60,7 @@ final class UserController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id<\d+>}', name: 'app_user_show', methods: ['GET'])]
     public function show(User $user): Response
     {
@@ -110,10 +110,14 @@ final class UserController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[isGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/{id<\d+>}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        if ($this->getUser() != $user && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('notice', 'Vous ne pouvez pas modifier ou supprimer un autre utilisateur que vous-même.');
+            return $this->redirectToRoute('app_user_profil', [], Response::HTTP_SEE_OTHER);
+        }
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -132,10 +136,15 @@ final class UserController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[isGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/{id<\d+>}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
+
+        if ($this->getUser() != $user && !$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('notice', 'Vous ne pouvez pas modifier ou supprimer un autre utilisateur que vous-même.');
+            return $this->redirectToRoute('app_user_profil', [], Response::HTTP_SEE_OTHER);
+        }
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($user);
             $entityManager->flush();

@@ -172,7 +172,7 @@ final class ShowController extends AbstractController
         $shows = $paginator->paginate(
             $tab,
             $request->query->getInt('page', 1),
-            9 // nombre de spectacles par page
+            9 
         );
 
         return $this->render('show/index.html.twig', [
@@ -194,7 +194,7 @@ final class ShowController extends AbstractController
         $shows = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            9 // nombre de spectacles par page
+            9 
         );
 
         return $this->render('show/index.html.twig', [
