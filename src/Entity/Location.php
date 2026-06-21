@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass:LocationRepository::class)]
+#[ORM\Entity(repositoryClass: LocationRepository::class)]
 class Location
 {
     #[ORM\Id]
@@ -16,15 +16,15 @@ class Location
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 60,nullable: true)]
+    #[ORM\Column(length: 60, nullable: true)]
     private ?string $slug = null;
 
-    #[ORM\Column(length: 60,nullable: false)]
-    #[Assert\NotBlank(message:'le titre ne peut pas etre vide')]
+    #[ORM\Column(length: 60, nullable: false)]
+    #[Assert\NotBlank(message: 'le titre ne peut pas etre vide')]
     private ?string $designation = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank(message:'l\'adresse ne peut pas etre vide')]
+    #[Assert\NotBlank(message: 'l\'adresse ne peut pas etre vide')]
     private ?string $address = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -189,5 +189,9 @@ class Location
         $this->locality = $locality;
 
         return $this;
+    }
+    function __toString()
+    {
+        return $this->designation;
     }
 }
