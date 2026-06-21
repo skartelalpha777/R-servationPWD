@@ -10,10 +10,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/representation/reservation')]
 final class RepresentationReservationController extends AbstractController
 {
+    #[IsGranted('ROLE_ADMIN')]
     #[Route(name: 'app_representation_reservation_index', methods: ['GET'])]
     public function index(RepresentationReservationRepository $representationReservationRepository): Response
     {
@@ -21,7 +23,7 @@ final class RepresentationReservationController extends AbstractController
             'representation_reservations' => $representationReservationRepository->findAll(),
         ]);
     }
-
+    #[IsGranted('ROLE_PRODUCTEUR')]
     #[Route('/new', name: 'app_representation_reservation_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -49,7 +51,7 @@ final class RepresentationReservationController extends AbstractController
             'representation_reservation' => $representationReservation,
         ]);
     }
-
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}/edit', name: 'app_representation_reservation_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, RepresentationReservation $representationReservation, EntityManagerInterface $entityManager): Response
     {
@@ -67,11 +69,11 @@ final class RepresentationReservationController extends AbstractController
             'form' => $form,
         ]);
     }
-
+    #[IsGranted('ROLE_ADMIN')]
     #[Route('/{id}', name: 'app_representation_reservation_delete', methods: ['POST'])]
     public function delete(Request $request, RepresentationReservation $representationReservation, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$representationReservation->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $representationReservation->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($representationReservation);
             $entityManager->flush();
         }
