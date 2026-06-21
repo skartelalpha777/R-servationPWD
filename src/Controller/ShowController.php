@@ -20,8 +20,16 @@ final class ShowController extends AbstractController
     #[Route(name: 'app_show_search', methods: ['GET', 'POST'])]
     public function search(ShowRepository $showRepository, Request $request): Response
     {
+        $trie = '';
         $submittedToken = $request->getPayload()->get('token');
         if ($this->isCsrfTokenValid('recherche', $submittedToken)) {
+
+            if (!empty($request->request->get('Trie'))) {
+                if ($request->request->get('Trie')) {
+                    $trie = $request->request->get('Trie');
+                }
+                // $showRepository->findShowByDateASC();
+            }
             $date = new DateTime();
 
             $tab = [];
@@ -117,6 +125,26 @@ final class ShowController extends AbstractController
                 }
             }
             $tab = $filtred;
+        }
+
+        if ($trie) {
+            usort($tab, function ($a, $b) use ($trie) {
+
+                switch ($trie) {
+
+                    case 'dureINC':
+                        return $a->getDuration() <=> $b->getDuration();
+
+                    case 'dureDESC':
+                        return $b->getDuration() <=> $a->getDuration();
+
+                    case 'Date':
+                        return $a->getCreatedIn() <=> $b->getCreatedIn();
+
+                    default:
+                        return 0;
+                }
+            });
         }
 
 
