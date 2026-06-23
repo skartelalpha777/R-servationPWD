@@ -9,7 +9,7 @@ use App\Entity\Location;
 use App\Entity\Locality;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
-class LocationFixtures extends Fixture
+class LocationFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
@@ -67,7 +67,7 @@ class LocationFixtures extends Fixture
         $manager->flush();
     }
 
-    public function getDependencies()
+    public function getDependencies(): array
     {
         return [
             LocalityFixtures::class,
