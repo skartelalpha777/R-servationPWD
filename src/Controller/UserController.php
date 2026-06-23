@@ -14,6 +14,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 #[Route('/user')]
 final class UserController extends AbstractController
@@ -138,16 +139,31 @@ final class UserController extends AbstractController
     }
     #[isGranted('IS_AUTHENTICATED_FULLY')]
     #[Route('/{id<\d+>}', name: 'app_user_delete', methods: ['POST'])]
-    public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, User $user, EntityManagerInterface $entityManager, TokenStorageInterface $tokenStorage): Response
     {
 
         if ($this->getUser() != $user && !$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('notice', 'Vous ne pouvez pas modifier ou supprimer un autre utilisateur que vous-même.');
             return $this->redirectToRoute('app_user_profil', [], Response::HTTP_SEE_OTHER);
         }
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($user);
-            $entityManager->flush();
+
+        if (!$this->isCsrfTokenValid('delete' . $user->getId(), $request->getPayload()->getString('_token'))) {
+            return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+        // L'utilisateur supprime-t-il son propre compte ?
+        $isSelfDeletion = $this->getUser() === $user;
+
+        $entityManager->remove($user);
+        $entityManager->flush();
+
+        // Auto-suppression : on invalide la session, sinon la sécurité tente de
+        // rafraîchir un utilisateur qui n'a plus d'identifiant ("cannot refresh a user...").
+        if ($isSelfDeletion) {
+            $tokenStorage->setToken(null);
+            $request->getSession()->invalidate();
+
+            return $this->redirectToRoute('app_show_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
